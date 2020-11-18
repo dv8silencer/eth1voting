@@ -126,7 +126,7 @@ sortedThis = {k: v for k, v in sorted(
     votesThis.items(), key=lambda item: item[1], reverse=True)}
 
 for item in sortedThis.items():
-    print("depositRoot={} blockHash={} count={} ({:.2f}% of full period {:.2f}% of votes thus far)".format(
+    print("depositRoot={} blockHash={} count={} ({:.2f}% of full period {:.2f}% of potential votes THUS far)".format(
         item[0].depositRoot,
         item[0].blockHash,
         item[1],

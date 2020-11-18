@@ -1,6 +1,8 @@
 import requests
 import json
 import urllib.parse
+import base64
+from string import lower
 
 epochsPerVotingPeriod = 64
 host = "127.0.0.1"
@@ -98,16 +100,30 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
         currentData = votesLast.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1
         currentData.graffiti.append(
-            data['blockContainers'][0]['block']['block']['body']['graffiti'])
+            base64.b64decode(data['blockContainers'][0]['block']['block']['body']['graffiti']))
         votesLast[thisEth1Data] = currentData
+
+for item in votesLast.items():
+    for eachGraffiti in item[1].graffiti:
+        if "prysm" in lower(eachGraffiti):
+            item[1].prysm += 1
+        if "lighthouse" in lower(eachGraffiti):
+            item[1].lighthouse += 1
+        if "teku" in lower(eachGraffiti):
+            item[1].teku += 1
+        if "nimbus" in lower(eachGraffiti):
+            item[1].nimbus += 1
 
 sortedLast = {k: v for k, v in sorted(
     votesLast.items(), key=lambda item: item[1].count, reverse=True)}
 
-
+print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
+tallyLast = "P{},L{},T{},N{}".format()
 for item in sortedLast.items():
-    print("depositRoot={} blockHash={} count={} ({:.2f}%)".format(
-        item[0].depositRoot, item[0].blockHash, item[1].count, 100*float(item[1].count)/slotsPerVotingPeriod))
+    print("depositRoot={} blockHash={} count={} ({:.2f}%) Tally={}".format(
+        item[0].depositRoot, item[0].blockHash, item[1].count, 100 *
+        float(item[1].count)/slotsPerVotingPeriod,
+        tallyLast))
 
 print("================================")
 print("================================")
@@ -148,16 +164,31 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
         currentData = votesThis.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1
         currentData.graffiti.append(
-            data['blockContainers'][0]['block']['block']['body']['graffiti'])
+            base64.b64decode(data['blockContainers'][0]['block']['block']['body']['graffiti']))
         votesThis[thisEth1Data] = currentData
+
+for item in votesThis.items():
+    for eachGraffiti in item[1].graffiti:
+        if "prysm" in lower(eachGraffiti):
+            item[1].prysm += 1
+        if "lighthouse" in lower(eachGraffiti):
+            item[1].lighthouse += 1
+        if "teku" in lower(eachGraffiti):
+            item[1].teku += 1
+        if "nimbus" in lower(eachGraffiti):
+            item[1].nimbus += 1
+
 
 sortedThis = {k: v for k, v in sorted(
     votesThis.items(), key=lambda item: item[1].count, reverse=True)}
 
+print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
+tallyNow = "P{},L{},T{},N{}".format()
 for item in sortedThis.items():
-    print("depositRoot={} blockHash={} count={} ({:.2f}% of full period {:.2f}% of potential votes THUS far)".format(
+    print("depositRoot={} blockHash={} count={} ({:.2f}% of full period {:.2f}% of potential votes THUS far. Tally={})".format(
         item[0].depositRoot,
         item[0].blockHash,
         item[1].count,
         100*float(item[1].count)/slotsPerVotingPeriod,
-        100*float(item[1].count)/slotsThusFar))
+        100*float(item[1].count)/slotsThusFar,
+        tallyNow))

@@ -86,19 +86,15 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
             continue
         thisEth1Data = eth1Data(data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot'],
                                 data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash'])
-        currentData = votesLast.get(thisEth1Data, eth1DataStats())
+        neweth1DataStat = eth1DataStats()
+        currentData = votesLast.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1
         currentData.graffiti.append(
             data['blockContainers'][0]['block']['block']['body']['graffiti'])
 
-# debug
-print(votesLast)
-
 sortedLast = {k: v for k, v in sorted(
     votesLast.items(), key=lambda item: item[1].count, reverse=True)}
 
-# debug
-print(sortedLast)
 
 for item in sortedLast.items():
     print("depositRoot={} blockHash={} count={} ({:.2f}%)".format(
@@ -139,8 +135,8 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
             continue
         thisEth1Data = eth1Data(data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot'],
                                 data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash'])
-
-        currentData = votesThis.get(thisEth1Data, eth1DataStats())
+        neweth1DataStat = eth1DataStats()
+        currentData = votesThis.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1
         currentData.graffiti.append(
             data['blockContainers'][0]['block']['block']['body']['graffiti'])

@@ -30,7 +30,7 @@ class eth1DataStats:
     def __init__(self):
         self.count = 0
         self.graffiti = []
-        self.pyrsm = 0
+        self.prysm = 0
         self.lighthouse = 0
         self.teku = 0
         self.nimbus = 0

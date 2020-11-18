@@ -97,12 +97,12 @@ votesThis = {}
 slotsThusFar = (finalizedEpoch - thisVotingPeriodStartEpoch) * slotsPerEpoch
 
 print("For the ongoing voting period (startEpoch={}\
-     startSlot={} through epoch={} slot={}, {:.2f}% complete):".format(thisVotingPeriodStartEpoch,
-                                                                       thisVotingPeriodStartEpoch*slotsPerEpoch,
-                                                                       nextVotingPeriodStartEpoch-1,
-                                                                       (nextVotingPeriodStartEpoch *
-                                                                        slotsPerEpoch)-1,
-                                                                       100*(float(slotsThusFar)/slotsPerVotingPeriod)))
+startSlot={} through epoch={} slot={}, {:.2f}% complete):".format(thisVotingPeriodStartEpoch,
+                                                                  thisVotingPeriodStartEpoch*slotsPerEpoch,
+                                                                  nextVotingPeriodStartEpoch-1,
+                                                                  (nextVotingPeriodStartEpoch *
+                                                                   slotsPerEpoch)-1,
+                                                                  100*(float(slotsThusFar)/slotsPerVotingPeriod)))
 
 
 for epoch in range(thisVotingPeriodStartEpoch, headEpoch):

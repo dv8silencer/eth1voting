@@ -99,7 +99,7 @@ votesThis = {}
 # slotsThusFar will only include slots in the finalized chain
 slotsThusFar = (finalizedEpoch - thisVotingPeriodStartEpoch) * slotsPerEpoch
 
-if(slotsThusFar == 0):
+if(slotsThusFar <= 0):
     print("Insuffient data for current voting period.  Exiting.")
 
 print("For the ongoing voting period (startEpoch={} \

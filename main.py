@@ -96,7 +96,7 @@ sortedLast = {k: v for k, v in sorted(
 
 for item in sortedLast.items():
     print("depositRoot={} blockHash={} count={} ({:.2f}%)".format(
-        item[0].depositRoot, item[0].blockHash, item[1], 100*float(item[1])/slotsPerVotingPeriod))
+        item[0].depositRoot, item[0].blockHash, item[1].count, 100*float(item[1].count)/slotsPerVotingPeriod))
 
 print("================================")
 print("================================")
@@ -146,6 +146,6 @@ for item in sortedThis.items():
     print("depositRoot={} blockHash={} count={} ({:.2f}% of full period {:.2f}% of potential votes THUS far)".format(
         item[0].depositRoot,
         item[0].blockHash,
-        item[1],
-        100*float(item[1])/slotsPerVotingPeriod,
-        100*float(item[1])/slotsThusFar))
+        item[1].count,
+        100*float(item[1].count)/slotsPerVotingPeriod,
+        100*float(item[1].count)/slotsThusFar))

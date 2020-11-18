@@ -2,7 +2,6 @@ import requests
 import json
 import urllib.parse
 import base64
-from string import lower
 
 epochsPerVotingPeriod = 64
 host = "127.0.0.1"

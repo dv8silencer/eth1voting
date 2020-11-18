@@ -21,6 +21,12 @@ class eth1Data:
         return self.__hash__() == other.__hash__()
 
 
+class eth1DataStats:
+    def __init__(self):
+        self.count = 0
+        self.graffiti = []
+
+
 response = requests.get(
     'http://{}:{}/eth/v1alpha1/beacon/chainhead'.format(host, port))
 data = response.content.decode()
@@ -80,8 +86,10 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
             continue
         thisEth1Data = eth1Data(data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot'],
                                 data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash'])
-
-        votesLast[thisEth1Data] = votesLast.get(thisEth1Data, 0) + 1
+        currentData = votesLast.get(thisEth1Data, eth1DataStats())
+        currentData.count += 1
+        currentData.graffiti.append(
+            data['blockContainers'][0]['block']['block']['body']['graffiti'])
 
 sortedLast = {k: v for k, v in sorted(
     votesLast.items(), key=lambda item: item[1], reverse=True)}
@@ -126,7 +134,10 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
         thisEth1Data = eth1Data(data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot'],
                                 data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash'])
 
-        votesThis[thisEth1Data] = votesThis.get(thisEth1Data, 0) + 1
+        currentData = votesThis.get(thisEth1Data, eth1DataStats())
+        currentData.count += 1
+        currentData.graffiti.append(
+            data['blockContainers'][0]['block']['block']['body']['graffiti'])
 
 sortedThis = {k: v for k, v in sorted(
     votesThis.items(), key=lambda item: item[1], reverse=True)}

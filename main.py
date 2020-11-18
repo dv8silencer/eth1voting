@@ -92,7 +92,7 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
             data['blockContainers'][0]['block']['block']['body']['graffiti'])
 
 sortedLast = {k: v for k, v in sorted(
-    votesLast.items(), key=lambda item: item[1], reverse=True)}
+    votesLast.items(), key=lambda item: item[1].count, reverse=True)}
 
 for item in sortedLast.items():
     print("depositRoot={} blockHash={} count={} ({:.2f}%)".format(
@@ -140,7 +140,7 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
             data['blockContainers'][0]['block']['block']['body']['graffiti'])
 
 sortedThis = {k: v for k, v in sorted(
-    votesThis.items(), key=lambda item: item[1], reverse=True)}
+    votesThis.items(), key=lambda item: item[1].count, reverse=True)}
 
 for item in sortedThis.items():
     print("depositRoot={} blockHash={} count={} ({:.2f}% of full period {:.2f}% of potential votes THUS far)".format(

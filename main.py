@@ -8,6 +8,8 @@ port = "3500"
 slotsPerEpoch = 32
 slotsPerVotingPeriod = epochsPerVotingPeriod * slotsPerEpoch
 
+# eth1Data represents a particular candidate that is being voted for during the voting period
+
 
 class eth1Data:
     def __init__(self, root, hashval):
@@ -20,11 +22,17 @@ class eth1Data:
     def __eq__(self, other):
         return self.__hash__() == other.__hash__()
 
+# eth1DataStats stores stats on each of the voting candidates
+
 
 class eth1DataStats:
     def __init__(self):
         self.count = 0
         self.graffiti = []
+        self.pyrsm = 0
+        self.lighthouse = 0
+        self.teku = 0
+        self.nimbus = 0
 
 
 response = requests.get(

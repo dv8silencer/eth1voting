@@ -32,6 +32,7 @@ lastVotingPeriodStartEpoch = (
     headEpoch // epochsPerVotingPeriod - 1) * epochsPerVotingPeriod
 thisVotingPeriodStartEpoch = lastVotingPeriodStartEpoch + epochsPerVotingPeriod
 nextVotingPeriodStartEpoch = thisVotingPeriodStartEpoch + epochsPerVotingPeriod
+lastVotingPeriodStartSlot = lastVotingPeriodStartEpoch * slotsPerEpoch
 
 print("headEpoch={} lastVotingPeriodStartEpoch={} thisVotingPeriodStartEpoch={}\
      nextVotingPeriodStartEpoch={}".format(headEpoch, lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch, nextVotingPeriodStartEpoch))
@@ -50,7 +51,8 @@ while True:
         host, port, urllib.parse.quote(currentRoot)))
     data = response.content.decode()
     data = json.loads(data)
-    if data['blockContainers'][0]['block']['block']['slot'] == "0":
+    tempSlot = data['blockContainers'][0]['block']['block']['slot']
+    if (tempSlot == "0") or (tempSlot < lastVotingPeriodStartSlot):
         break
     chain.append(currentRoot)
     currentRoot = data['blockContainers'][0]['block']['block']['parentRoot']

@@ -90,6 +90,9 @@ for item in sortedLast.items():
     print("depositRoot={} blockHash={} count={} ({:.2f}%)".format(
         item[0].depositRoot, item[0].blockHash, item[1], 100*float(item[1])/slotsPerVotingPeriod))
 
+print("================================")
+print("================================")
+
 # THIS PERIOD
 votesThis = {}
 

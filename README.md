@@ -3,6 +3,7 @@ A **very** simple and quickly put-together tool to summarize eth1 voting data oc
 
 ## Please read the accompanying LICENSE file.  eth1voting is licensed under the GNU General Public License v3.0
 
+## Python3 is required
 
 -------------------------------
 

@@ -34,8 +34,8 @@ thisVotingPeriodStartEpoch = lastVotingPeriodStartEpoch + epochsPerVotingPeriod
 nextVotingPeriodStartEpoch = thisVotingPeriodStartEpoch + epochsPerVotingPeriod
 lastVotingPeriodStartSlot = lastVotingPeriodStartEpoch * slotsPerEpoch
 
-print("headEpoch={} lastVotingPeriodStartEpoch={} thisVotingPeriodStartEpoch={}\
-     nextVotingPeriodStartEpoch={}".format(headEpoch, lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch, nextVotingPeriodStartEpoch))
+print("headEpoch={} lastVotingPeriodStartEpoch={} thisVotingPeriodStartEpoch={} \
+nextVotingPeriodStartEpoch={}".format(headEpoch, lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch, nextVotingPeriodStartEpoch))
 
 # CREATE CANONICAL CHAIN TO REMOVE ORPHANS
 
@@ -60,9 +60,9 @@ while True:
 # PREVIOUS PERIOD
 votesLast = {}
 
-print("For the last voting period (startEpoch={} startSlot={} through epoch={}\
-     slot={}):".format(lastVotingPeriodStartEpoch, lastVotingPeriodStartEpoch*slotsPerEpoch,
-                       thisVotingPeriodStartEpoch-1, (thisVotingPeriodStartEpoch*slotsPerEpoch)-1))
+print("For the last voting period (startEpoch={} startSlot={} through epoch={} \
+slot={}):".format(lastVotingPeriodStartEpoch, lastVotingPeriodStartEpoch*slotsPerEpoch,
+                  thisVotingPeriodStartEpoch-1, (thisVotingPeriodStartEpoch*slotsPerEpoch)-1))
 
 for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
     if epoch < 0:

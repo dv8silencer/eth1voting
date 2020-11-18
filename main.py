@@ -91,6 +91,7 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
         currentData.count += 1
         currentData.graffiti.append(
             data['blockContainers'][0]['block']['block']['body']['graffiti'])
+        votesLast[thisEth1Data] = currentData
 
 sortedLast = {k: v for k, v in sorted(
     votesLast.items(), key=lambda item: item[1].count, reverse=True)}
@@ -140,6 +141,7 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
         currentData.count += 1
         currentData.graffiti.append(
             data['blockContainers'][0]['block']['block']['body']['graffiti'])
+        votesThis[thisEth1Data] = currentData
 
 sortedThis = {k: v for k, v in sorted(
     votesThis.items(), key=lambda item: item[1].count, reverse=True)}

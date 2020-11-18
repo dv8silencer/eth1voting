@@ -104,7 +104,7 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
 
 for item in votesLast.items():
     for eachGraffiti in item[1].graffiti:
-        lowercased = eachGraffiti.lower()
+        lowercased = str(eachGraffiti.lower())
         if "prysm" in lowercased:
             item[1].prysm += 1
         if "lighthouse" in lowercased:
@@ -169,7 +169,7 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
 
 for item in votesThis.items():
     for eachGraffiti in item[1].graffiti:
-        lowercased = eachGraffiti.lower()
+        lowercased = str(eachGraffiti.lower())
         if "prysm" in lowercased:
             item[1].prysm += 1
         if "lighthouse" in lowercased:

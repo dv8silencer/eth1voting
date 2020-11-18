@@ -91,8 +91,14 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
         currentData.graffiti.append(
             data['blockContainers'][0]['block']['block']['body']['graffiti'])
 
+# debug
+print(votesLast)
+
 sortedLast = {k: v for k, v in sorted(
     votesLast.items(), key=lambda item: item[1].count, reverse=True)}
+
+# debug
+print(sortedLast)
 
 for item in sortedLast.items():
     print("depositRoot={} blockHash={} count={} ({:.2f}%)".format(

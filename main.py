@@ -96,7 +96,7 @@ votesThis = {}
 # slotsThusFar will only include slots in the finalized chain
 slotsThusFar = (finalizedEpoch - thisVotingPeriodStartEpoch) * slotsPerEpoch
 
-print("For the ongoing voting period (startEpoch={}\
+print("For the ongoing voting period (startEpoch={} \
 startSlot={} through epoch={} slot={}, {:.2f}% complete):".format(thisVotingPeriodStartEpoch,
                                                                   thisVotingPeriodStartEpoch*slotsPerEpoch,
                                                                   nextVotingPeriodStartEpoch-1,

@@ -51,8 +51,8 @@ while True:
         host, port, urllib.parse.quote(currentRoot)))
     data = response.content.decode()
     data = json.loads(data)
-    tempSlot = data['blockContainers'][0]['block']['block']['slot']
-    if (tempSlot == "0") or (tempSlot < lastVotingPeriodStartSlot):
+    tempSlot = int(data['blockContainers'][0]['block']['block']['slot'])
+    if (tempSlot == 0) or (tempSlot < lastVotingPeriodStartSlot):
         break
     chain.append(currentRoot)
     currentRoot = data['blockContainers'][0]['block']['block']['parentRoot']

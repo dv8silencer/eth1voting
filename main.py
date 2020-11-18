@@ -57,8 +57,6 @@ while True:
     chain.append(currentRoot)
     currentRoot = data['blockContainers'][0]['block']['block']['parentRoot']
 
-print("Debug:  Blocks in finalized chain:  {}".format(len(chain)))
-
 # PREVIOUS PERIOD
 votesLast = {}
 

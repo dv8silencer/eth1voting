@@ -39,8 +39,8 @@ print("headEpoch={} lastVotingPeriodStartEpoch={} thisVotingPeriodStartEpoch={}\
 # CREATE CANONICAL CHAIN TO REMOVE ORPHANS
 
 chain = []
-finalizedSlot = data['finalizedSlot']
-finalizedEpoch = data['finalizedEpoch']
+finalizedSlot = int(data['finalizedSlot'])
+finalizedEpoch = int(data['finalizedEpoch'])
 # Saving finalizedRoot in own var in case I want it in the future
 finalizedRoot = data['finalizedBlockRoot']
 currentRoot = finalizedRoot

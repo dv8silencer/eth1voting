@@ -185,7 +185,7 @@ print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedThis.items():
     print("depositRoot=0x{}... blockHash=0x{}".format((item[0].depositRoot)[:10],
                                                       item[0].blockHash,))
-    print("withinBounds={}  count={} ({:.2f}% of full period {:.2f}% of\
+    print("\t\twithinBounds={}  count={} ({:.2f}% of full period {:.2f}% of\
  potential votes THUS far. Tally=P{},L{},T{},N{})".format(
         item[1].withinBounds,
         item[1].count,

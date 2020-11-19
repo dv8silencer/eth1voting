@@ -183,11 +183,11 @@ sortedThis = {k: v for k, v in sorted(
 
 print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedThis.items():
-    print("withinBounds={} depositRoot=0x{}... blockHash=0x{} count={} ({:.2f}% of full period {:.2f}% of\
+    print("depositRoot=0x{}... blockHash=0x{}".format((item[0].depositRoot)[:10],
+                                                      item[0].blockHash,))
+    print("withinBounds={}  count={} ({:.2f}% of full period {:.2f}% of\
  potential votes THUS far. Tally=P{},L{},T{},N{})".format(
         item[1].withinBounds,
-        (item[0].depositRoot)[:10],
-        item[0].blockHash,
         item[1].count,
         100*float(item[1].count)/slotsPerVotingPeriod,
         100*float(item[1].count)/slotsThusFar,

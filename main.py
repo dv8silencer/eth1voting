@@ -222,7 +222,7 @@ for item in votesThis.items():
     url = "http://{}:{}/".format(gethhost, gethport)
     payload = {
         "method": "eth_getBlockByHash",
-        "params": [item[0].hexBlockHash, True],
+        "params": [item[0].blockHash, True],
         "jsonrpc": "2.0",
         "id": 0,
     }

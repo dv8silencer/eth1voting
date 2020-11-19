@@ -26,6 +26,8 @@ import base64
 epochsPerVotingPeriod = 64
 host = "127.0.0.1"
 port = "3500"
+gethhost = "192.168.1.7"
+gethport = "8545"
 slotsPerEpoch = 32
 slotsPerVotingPeriod = epochsPerVotingPeriod * slotsPerEpoch
 
@@ -55,6 +57,7 @@ class eth1DataStats:
         self.lighthouse = 0
         self.teku = 0
         self.nimbus = 0
+        self.withinBounds = False
 
 
 response = requests.get(
@@ -170,6 +173,15 @@ startSlot={} through epoch={} slot={}, {:.2f}% complete):".format(thisVotingPeri
                                                                    slotsPerEpoch)-1,
                                                                   100*(float(slotsThusFar)/slotsPerVotingPeriod)))
 
+seconds_per_slot = 12
+seconds_per_eth1_block = 13
+eth1_follow_distance = 2048
+genesis_time = 1605700800
+upper_bound_ts = genesis_time + (thisVotingPeriodStartEpoch*slotsPerEpoch *
+                                 seconds_per_slot) - (eth1_follow_distance*seconds_per_eth1_block)
+lower_bound_ts = genesis_time + (thisVotingPeriodStartEpoch*slotsPerEpoch *
+                                 seconds_per_slot) - (eth1_follow_distance*seconds_per_eth1_block * 2)
+
 
 for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
     for slot in range(epoch * slotsPerEpoch, (epoch+1) * slotsPerEpoch):
@@ -206,6 +218,18 @@ for item in votesThis.items():
             item[1].teku += 1
         if "nimbus" in lowercased:
             item[1].nimbus += 1
+    # Obtain timestamp from eth1 endpoint
+    url = "http://{}:{}/".format(gethhost, gethport)
+    payload = {
+        "method": "eth_getBlockByHash",
+        "params": [item[0].hexBlockHash, True],
+        "jsonrpc": "2.0",
+        "id": 0,
+    }
+    response = requests.port(url, json=payload).json()
+    block_ts = int(response["result"]["timestamp"], 0)
+    if (block_ts < upper_bound_ts) and (block_ts > lower_bound_ts):
+        item[1].withinBounds = True
 
 
 sortedThis = {k: v for k, v in sorted(
@@ -213,8 +237,9 @@ sortedThis = {k: v for k, v in sorted(
 
 print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedThis.items():
-    print("depositRoot=0x{}... blockHash=0x{} count={} ({:.2f}% of full period {:.2f}% of\
+    print("withinBounds={} depositRoot=0x{}... blockHash=0x{} count={} ({:.2f}% of full period {:.2f}% of\
  potential votes THUS far. Tally=P{},L{},T{},N{})".format(
+        item[1].withinBounds,
         (item[0].depositRoot)[:10],
         item[0].blockHash,
         item[1].count,

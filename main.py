@@ -227,7 +227,11 @@ for item in votesThis.items():
         "id": 0,
     }
     response = requests.post(url, json=payload).json()
-    block_ts = int(response["result"]["timestamp"], 0)
+    try:
+
+        block_ts = int(response["result"]["timestamp"], 0)
+    except:
+        continue
     if (block_ts < upper_bound_ts) and (block_ts > lower_bound_ts):
         item[1].withinBounds = True
 

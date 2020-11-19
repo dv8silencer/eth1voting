@@ -93,8 +93,11 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
             continue
         if data['blockContainers'][0]['blockRoot'] not in chain:
             continue
-        thisEth1Data = eth1Data(data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot'],
-                                data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash'])
+        tempDepositRoot = data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot']
+        hexDepositRoot = str(base64.b64decode(tempDepositRoot), "utf-8")
+        tempBlockHash = data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash']
+        hexBlockHash = str(base64.b64decode(tempBlockHash), "utf-8")
+        thisEth1Data = eth1Data(hexDepositRoot, hexBlockHash)
         neweth1DataStat = eth1DataStats()
         currentData = votesLast.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1
@@ -157,8 +160,11 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
             continue
         if data['blockContainers'][0]['blockRoot'] not in chain:
             continue
-        thisEth1Data = eth1Data(data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot'],
-                                data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash'])
+        tempDepositRoot = data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot']
+        hexDepositRoot = str(base64.b64decode(tempDepositRoot), "utf-8")
+        tempBlockHash = data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash']
+        hexBlockHash = str(base64.b64decode(tempBlockHash), "utf-8")
+        thisEth1Data = eth1Data(hexDepositRoot, hexBlockHash)
         neweth1DataStat = eth1DataStats()
         currentData = votesThis.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1

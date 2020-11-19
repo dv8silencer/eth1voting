@@ -226,7 +226,7 @@ for item in votesThis.items():
         "jsonrpc": "2.0",
         "id": 0,
     }
-    response = requests.port(url, json=payload).json()
+    response = requests.post(url, json=payload).json()
     block_ts = int(response["result"]["timestamp"], 0)
     if (block_ts < upper_bound_ts) and (block_ts > lower_bound_ts):
         item[1].withinBounds = True

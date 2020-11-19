@@ -10,6 +10,7 @@ slotsPerEpoch = 32
 slotsPerVotingPeriod = epochsPerVotingPeriod * slotsPerEpoch
 
 # eth1Data represents a particular candidate that is being voted for during the voting period
+# this has __hash__ and __eq__ as it is used as a key in a dictionary
 
 
 class eth1Data:
@@ -23,7 +24,7 @@ class eth1Data:
     def __eq__(self, other):
         return self.__hash__() == other.__hash__()
 
-# eth1DataStats stores stats on each of the voting candidates
+# eth1DataStats stores stats on each of the eth1data candidates
 
 
 class eth1DataStats:
@@ -53,7 +54,7 @@ print("headEpoch={} lastVotingPeriodStartEpoch={} thisVotingPeriodStartEpoch={} 
 nextVotingPeriodStartEpoch={}".format(headEpoch, lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch, nextVotingPeriodStartEpoch))
 
 print("================================")
-# CREATE CANONICAL CHAIN TO REMOVE ORPHANS
+# CREATE CANONICAL CHAIN TO EXCLUDE ORPHANS
 
 chain = []
 finalizedSlot = int(data['finalizedSlot'])
@@ -139,6 +140,7 @@ slotsThusFar = (finalizedEpoch - thisVotingPeriodStartEpoch) * slotsPerEpoch
 
 if(slotsThusFar <= 0):
     print("Insuffient data for current voting period.  Exiting.")
+    quit()
 
 print("For the ONGOING voting period (startEpoch={} \
 startSlot={} through epoch={} slot={}, {:.2f}% complete):".format(thisVotingPeriodStartEpoch,

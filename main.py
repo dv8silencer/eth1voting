@@ -52,6 +52,7 @@ lastVotingPeriodStartSlot = lastVotingPeriodStartEpoch * slotsPerEpoch
 print("headEpoch={} lastVotingPeriodStartEpoch={} thisVotingPeriodStartEpoch={} \
 nextVotingPeriodStartEpoch={}".format(headEpoch, lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch, nextVotingPeriodStartEpoch))
 
+print("================================")
 # CREATE CANONICAL CHAIN TO REMOVE ORPHANS
 
 chain = []
@@ -75,7 +76,7 @@ while True:
 # PREVIOUS PERIOD
 votesLast = {}
 
-print("For the last voting period (startEpoch={} startSlot={} through epoch={} \
+print("For the LAST voting period (startEpoch={} startSlot={} through epoch={} \
 slot={}):".format(lastVotingPeriodStartEpoch, lastVotingPeriodStartEpoch*slotsPerEpoch,
                   thisVotingPeriodStartEpoch-1, (thisVotingPeriodStartEpoch*slotsPerEpoch)-1))
 
@@ -122,7 +123,7 @@ sortedLast = {k: v for k, v in sorted(
 
 print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedLast.items():
-    print("depositRoot={} blockHash={} count={} ({:.2f}%) Tally=P{},L{},T{},N{}".format(
+    print("depositRoot=0x{} blockHash=0x{} count={} ({:.2f}%) Tally=P{},L{},T{},N{}".format(
         item[0].depositRoot, item[0].blockHash, item[1].count, 100 *
         float(item[1].count)/slotsPerVotingPeriod,
         item[1].prysm, item[1].lighthouse, item[1].teku, item[1].nimbus))
@@ -139,7 +140,7 @@ slotsThusFar = (finalizedEpoch - thisVotingPeriodStartEpoch) * slotsPerEpoch
 if(slotsThusFar <= 0):
     print("Insuffient data for current voting period.  Exiting.")
 
-print("For the ongoing voting period (startEpoch={} \
+print("For the ONGOING voting period (startEpoch={} \
 startSlot={} through epoch={} slot={}, {:.2f}% complete):".format(thisVotingPeriodStartEpoch,
                                                                   thisVotingPeriodStartEpoch*slotsPerEpoch,
                                                                   nextVotingPeriodStartEpoch-1,
@@ -190,7 +191,8 @@ sortedThis = {k: v for k, v in sorted(
 
 print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedThis.items():
-    print("depositRoot={} blockHash={} count={} ({:.2f}% of full period {:.2f}% of potential votes THUS far. Tally=P{},L{},T{},N{})".format(
+    print("depositRoot=0x{} blockHash=0x{} count={} ({:.2f}% of full period {:.2f}% of\
+ potential votes THUS far. Tally=P{},L{},T{},N{})".format(
         item[0].depositRoot,
         item[0].blockHash,
         item[1].count,

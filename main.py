@@ -132,7 +132,7 @@ for item in votesLast.items():
         lowercased = str(eachGraffiti, "utf-8").lower()
         if ("prylabs" in lowercased) or ("prysm" in lowercased):
             item[1].prysm += 1
-        if "lighthouse" in lowercased:
+        if ("lighthouse" in lowercased) or (("lh" in lowercased) and ("ef" in lowercased) and ("temp" in lowercased)):
             item[1].lighthouse += 1
         if "teku" in lowercased:
             item[1].teku += 1
@@ -200,7 +200,7 @@ for item in votesThis.items():
         lowercased = str(eachGraffiti, "utf-8").lower()
         if ("prylabs" in lowercased) or ("prysm" in lowercased):
             item[1].prysm += 1
-        if "lighthouse" in lowercased:
+        if ("lighthouse" in lowercased) or (("lh" in lowercased) and ("ef" in lowercased) and ("temp" in lowercased)):
             item[1].lighthouse += 1
         if "teku" in lowercased:
             item[1].teku += 1

@@ -97,64 +97,6 @@ while True:
     chain.append(currentRoot)
     currentRoot = data['blockContainers'][0]['block']['block']['parentRoot']
 
-# PREVIOUS PERIOD
-votesLast = {}
-
-print("For the LAST voting period (startEpoch={} startSlot={} through epoch={} \
-slot={}):".format(lastVotingPeriodStartEpoch, lastVotingPeriodStartEpoch*slotsPerEpoch,
-                  thisVotingPeriodStartEpoch-1, (thisVotingPeriodStartEpoch*slotsPerEpoch)-1))
-
-for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
-    if epoch < 0:
-        continue
-    for slot in range(epoch * slotsPerEpoch, (epoch+1) * slotsPerEpoch):
-        if slot == 0:
-            continue
-        response = requests.get(
-            "http://{}:{}/eth/v1alpha1/beacon/blocks?slot={}".format(host, port, slot))
-        data = response.content.decode()
-        data = json.loads(data)
-        if data["blockContainers"] == list():
-            continue
-        if data['blockContainers'][0]['blockRoot'] not in chain:
-            continue
-        tempDepositRoot = data['blockContainers'][0]['block']['block']['body']['eth1Data']['depositRoot']
-        hexDepositRoot = base64.b64decode(tempDepositRoot).hex()
-        tempBlockHash = data['blockContainers'][0]['block']['block']['body']['eth1Data']['blockHash']
-        hexBlockHash = base64.b64decode(tempBlockHash).hex()
-        thisEth1Data = eth1Data(hexDepositRoot, hexBlockHash)
-        neweth1DataStat = eth1DataStats()
-        currentData = votesLast.get(thisEth1Data, neweth1DataStat)
-        currentData.count += 1
-        currentData.graffiti.append(
-            base64.b64decode(data['blockContainers'][0]['block']['block']['body']['graffiti']))
-        votesLast[thisEth1Data] = currentData
-
-for item in votesLast.items():
-    for eachGraffiti in item[1].graffiti:
-        lowercased = str(eachGraffiti, "utf-8").lower()
-        if ("prylabs" in lowercased) or ("prysm" in lowercased):
-            item[1].prysm += 1
-        if ("lighthouse" in lowercased) or (("lh" in lowercased) and ("ef" in lowercased) and ("temp" in lowercased)):
-            item[1].lighthouse += 1
-        if "teku" in lowercased:
-            item[1].teku += 1
-        if "nimbus" in lowercased:
-            item[1].nimbus += 1
-
-sortedLast = {k: v for k, v in sorted(
-    votesLast.items(), key=lambda item: item[1].count, reverse=True)}
-
-print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
-for item in sortedLast.items():
-    print("depositRoot=0x{}... blockHash=0x{} count={} ({:.2f}%) Tally=P{},L{},T{},N{}".format(
-        (item[0].depositRoot)[:10], item[0].blockHash, item[1].count, 100 *
-        float(item[1].count)/slotsPerVotingPeriod,
-        item[1].prysm, item[1].lighthouse, item[1].teku, item[1].nimbus))
-
-print("================================")
-print("================================")
-
 # THIS PERIOD
 votesThis = {}
 
@@ -173,10 +115,11 @@ startSlot={} through epoch={} slot={}, {:.2f}% complete):".format(thisVotingPeri
                                                                    slotsPerEpoch)-1,
                                                                   100*(float(slotsThusFar)/slotsPerVotingPeriod)))
 
+# To establish "vote for majority" algorithm time bounds
 seconds_per_slot = 12
 seconds_per_eth1_block = 13
 eth1_follow_distance = 2048
-genesis_time = 1605700800
+genesis_time = 1605700800  # Prymont
 upper_bound_ts = genesis_time + (thisVotingPeriodStartEpoch*slotsPerEpoch *
                                  seconds_per_slot) - (eth1_follow_distance*seconds_per_eth1_block)
 lower_bound_ts = genesis_time + (thisVotingPeriodStartEpoch*slotsPerEpoch *
@@ -228,7 +171,6 @@ for item in votesThis.items():
     }
     response = requests.post(url, json=payload).json()
     try:
-
         block_ts = int(response["result"]["timestamp"], 0)
     except:
         continue

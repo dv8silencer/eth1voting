@@ -146,7 +146,7 @@ sortedLast = {k: v for k, v in sorted(
 
 print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedLast.items():
-    print("depositRoot=0x{}... blockHash=0x{} count={} ({:.2f}%) Tally=P{},L{},T{},N{}".format(
+    print("depositRoot=0x{}... blockHash=0x{}\n\t\tcount={} ({:.2f}%) Tally=P{},L{},T{},N{}".format(
         (item[0].depositRoot)[:10], item[0].blockHash, item[1].count, 100 *
         float(item[1].count)/slotsPerVotingPeriod,
         item[1].prysm, item[1].lighthouse, item[1].teku, item[1].nimbus))
@@ -215,7 +215,7 @@ sortedThis = {k: v for k, v in sorted(
 
 print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedThis.items():
-    print("depositRoot=0x{}... blockHash=0x{} count={} ({:.2f}% of full period {:.2f}% of\
+    print("depositRoot=0x{}... blockHash=0x{}\n\t\tcount={} ({:.2f}% of full period {:.2f}% of\
  potential votes THUS far. Tally=P{},L{},T{},N{})".format(
         (item[0].depositRoot)[:10],
         item[0].blockHash,

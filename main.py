@@ -74,7 +74,9 @@ print("headEpoch={} lastVotingPeriodStartEpoch={} thisVotingPeriodStartEpoch={} 
 nextVotingPeriodStartEpoch={}".format(headEpoch, lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch, nextVotingPeriodStartEpoch))
 
 print("================================")
-# CREATE CANONICAL CHAIN TO EXCLUDE ORPHANS
+print("**SLIGHT DELAY**: HEAD IS REPORTED ABOVE, BUT THIS TOOL FOLLOWS ETH1DATA VOTES FROM ONLY THE FINALIZED PORTION OF CHAIN.")
+print("================================")
+# CREATE CANONICAL CHAIN TO EXCLUDE ORPHANS, GIVE MORE STABLE VALUES BETWEEN RUNTIMES
 
 chain = []
 finalizedSlot = int(data['finalizedSlot'])

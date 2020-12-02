@@ -50,11 +50,6 @@ class eth1Data:
 class eth1DataStats:
     def __init__(self):
         self.count = 0
-        self.graffiti = []
-        self.prysm = 0
-        self.lighthouse = 0
-        self.teku = 0
-        self.nimbus = 0
 
 
 response = requests.get(
@@ -125,31 +120,15 @@ for epoch in range(lastVotingPeriodStartEpoch, thisVotingPeriodStartEpoch):
         neweth1DataStat = eth1DataStats()
         currentData = votesLast.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1
-        currentData.graffiti.append(
-            base64.b64decode(data['blockContainers'][0]['block']['block']['body']['graffiti']))
         votesLast[thisEth1Data] = currentData
-
-for item in votesLast.items():
-    for eachGraffiti in item[1].graffiti:
-        lowercased = str(eachGraffiti, "utf-8").lower()
-        if ("prylabs" in lowercased) or ("prysm" in lowercased):
-            item[1].prysm += 1
-        if ("lighthouse" in lowercased) or (("lh" in lowercased) and ("ef" in lowercased) and ("temp" in lowercased)):
-            item[1].lighthouse += 1
-        if "teku" in lowercased:
-            item[1].teku += 1
-        if "nimbus" in lowercased:
-            item[1].nimbus += 1
 
 sortedLast = {k: v for k, v in sorted(
     votesLast.items(), key=lambda item: item[1].count, reverse=True)}
 
-print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedLast.items():
-    print("depositRoot=0x{}... blockHash=0x{}\n\t\tcount={} ({:.2f}%) Tally=P{},L{},T{},N{}".format(
+    print("depositRoot=0x{}... blockHash=0x{}\n\t\tcount={} ({:.2f}%)".format(
         (item[0].depositRoot)[:10], item[0].blockHash, item[1].count, 100 *
-        float(item[1].count)/slotsPerVotingPeriod,
-        item[1].prysm, item[1].lighthouse, item[1].teku, item[1].nimbus))
+        float(item[1].count)/slotsPerVotingPeriod))
 
 print("================================")
 print("================================")
@@ -193,33 +172,16 @@ for epoch in range(thisVotingPeriodStartEpoch, headEpoch):
         neweth1DataStat = eth1DataStats()
         currentData = votesThis.get(thisEth1Data, neweth1DataStat)
         currentData.count += 1
-        currentData.graffiti.append(
-            base64.b64decode(data['blockContainers'][0]['block']['block']['body']['graffiti']))
         votesThis[thisEth1Data] = currentData
-
-for item in votesThis.items():
-    for eachGraffiti in item[1].graffiti:
-        lowercased = str(eachGraffiti, "utf-8").lower()
-        if ("prylabs" in lowercased) or ("prysm" in lowercased):
-            item[1].prysm += 1
-        if ("lighthouse" in lowercased) or (("lh" in lowercased) and ("ef" in lowercased) and ("temp" in lowercased)):
-            item[1].lighthouse += 1
-        if "teku" in lowercased:
-            item[1].teku += 1
-        if "nimbus" in lowercased:
-            item[1].nimbus += 1
-
 
 sortedThis = {k: v for k, v in sorted(
     votesThis.items(), key=lambda item: item[1].count, reverse=True)}
 
-print("Ordering of tally (last column): Prysm,Lightouse,Teku,Nimbus")
 for item in sortedThis.items():
     print("depositRoot=0x{}... blockHash=0x{}\n\t\tcount={} ({:.2f}% of full period {:.2f}% of\
- potential votes THUS far. Tally=P{},L{},T{},N{})".format(
+ potential votes THUS far.)".format(
         (item[0].depositRoot)[:10],
         item[0].blockHash,
         item[1].count,
         100*float(item[1].count)/slotsPerVotingPeriod,
-        100*float(item[1].count)/slotsThusFar,
-        item[1].prysm, item[1].lighthouse, item[1].teku, item[1].nimbus))
+        100*float(item[1].count)/slotsThusFar))
